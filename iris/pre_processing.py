@@ -1,6 +1,6 @@
 import pandas
-import matplotlib.pyplot as plt
-import seaborn
+from sklearn.model_selection import train_test_split
+
 
 def remove_duplicate_rows(df):
     # Count the number of rows before removing duplicates
@@ -33,13 +33,16 @@ dataset = remove_duplicate_rows(dataset)
 
 print(dataset.describe(include="all"))
 
-num_variables = len(dataset.columns)
-num_output_variables = 1
-number_input_variables = num_variables - num_output_variables
-
-input_columns = dataset.columns[0:number_input_variables]
-
-#seaborn.pairplot(dataset, hue='class')
-#plt.show()
-
 dataset.to_csv("pre_processed/iris.csv", index=False)
+
+x = dataset.drop(columns=['class'])
+t = dataset['class']
+
+x_train, x_test, t_train, t_test = (
+    train_test_split(x, t, train_size=0.5, stratify=t))
+
+train = pandas.concat([x_train, t_train], axis='columns', join='inner')
+test = pandas.concat([x_test, t_test], axis='columns', join='inner')
+
+train.to_csv('pre_processed/iris_train.csv', index=False)
+test.to_csv('pre_processed/iris_test.csv', index=False)
