@@ -44,5 +44,3 @@ test = pd.concat([x_test, t_test], axis='columns', join='inner')
 train.to_csv(
     "wine_quality/pre_processed/wine_quality_white_train.csv", index=False)
 test.to_csv("wine_quality/pre_processed/wine_quality_white_test.csv", index=False)
-
-# train_test_split não consegue realizar a divisão com a opção stratify=t, pois há classes com apenas um exemplo, e a divisão estratificada exige pelo menos duas amostras em cada classe para garantir uma distribuição proporcional entre treino e teste
