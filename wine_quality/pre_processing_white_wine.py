@@ -18,12 +18,7 @@ def remove_duplicate_rows(df):
     return df_cleaned
 
 
-column_names = [
-    'fixed acidity', 'volatile acidity', 'citric acid', 'residual sugar', 'chlorides', 'free sulfur dioxide', 'total sulfur dioxide', 'density', 'pH', 'sulphates', 'alcohol', 'quality'
-]
-
-dataset = pd.read_csv("wine_quality/data/winequality-white.csv",
-                      header=None, names=column_names, delimiter=';')
+dataset = pd.read_csv("wine_quality/data/winequality-white.csv", delimiter=';')
 
 dataset = remove_duplicate_rows(dataset)
 
@@ -41,7 +36,7 @@ x = dataset.drop(columns=['quality'])
 t = dataset['quality']
 
 x_train, x_test, t_train, t_test = train_test_split(
-    x, t, train_size=0.5, stratify=t, random_state=42)
+    x, t, train_size=0.5, stratify=t)
 
 train = pd.concat([x_train, t_train], axis='columns', join='inner')
 test = pd.concat([x_test, t_test], axis='columns', join='inner')

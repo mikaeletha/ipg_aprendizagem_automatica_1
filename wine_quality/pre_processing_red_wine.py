@@ -18,12 +18,7 @@ def remove_duplicate_rows(df):
     return df_cleaned
 
 
-column_names = [
-    'fixed acidity', 'volatile acidity', 'citric acid', 'residual sugar', 'chlorides', 'free sulfur dioxide', 'total sulfur dioxide', 'density', 'pH', 'sulphates', 'alcohol', 'quality'
-]
-
-dataset = pd.read_csv("wine_quality/data/winequality-red.csv",
-                      header=None, names=column_names, delimiter=';')
+dataset = pd.read_csv("wine_quality/data/winequality-red.csv", delimiter=';')
 
 dataset = remove_duplicate_rows(dataset)
 
@@ -40,7 +35,7 @@ x = dataset.drop(columns=['quality'])
 t = dataset['quality']
 
 x_train, x_test, t_train, t_test = train_test_split(
-    x, t, train_size=0.5, stratify=t, random_state=42)
+    x, t, train_size=0.5, stratify=t)
 
 train = pd.concat([x_train, t_train], axis='columns', join='inner')
 test = pd.concat([x_test, t_test], axis='columns', join='inner')
@@ -48,5 +43,3 @@ test = pd.concat([x_test, t_test], axis='columns', join='inner')
 train.to_csv(
     "wine_quality/pre_processed/wine_quality_red_train.csv", index=False)
 test.to_csv("wine_quality/pre_processed/wine_quality_red_test.csv", index=False)
-
-# train_test_split não consegue realizar a divisão com a opção stratify=t, pois há classes com apenas um exemplo, e a divisão estratificada exige pelo menos duas amostras em cada classe para garantir uma distribuição proporcional entre treino e teste
