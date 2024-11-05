@@ -1,17 +1,20 @@
 import pandas as pd
 from sklearn.model_selection import GridSearchCV
 from sklearn.neighbors import KNeighborsClassifier
+from sklearn.neighbors import KNeighborsRegressor
 
 
 def optimize_knn(file_path):
     param = [
-        {'n_neighbors': range(1, 21), 'p': [1, 2, 3, 4, 5]},
+        {'n_neighbors': range(1, 40), 'p': [1, 2, 3]},
     ]
 
     gs = GridSearchCV(
-        KNeighborsClassifier(),
+        # KNeighborsClassifier(),
+        KNeighborsRegressor(),
         param,
-        scoring='f1_macro',
+        # scoring='f1_macro',
+        scoring='neg_mean_squared_error',
         verbose=True
     )
 
