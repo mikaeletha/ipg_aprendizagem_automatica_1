@@ -7,7 +7,7 @@ def optimize_knn(file_path):
     param = [
         {
             'n_neighbors': range(1, 21),
-            'metric': ['euclidean', 'manhattan', 'chebyshev', 'cosine']
+            'p': [1, 2, 3]
         }
     ]
 
@@ -29,3 +29,4 @@ def optimize_knn(file_path):
 
 
 optimize_knn("breast_cancer_wisconsin_diagnostic/pre_processed/wdbc_train.csv")
+optimize_knn("breast_cancer_wisconsin_diagnostic/pre_processed/wdbc_test.csv")
