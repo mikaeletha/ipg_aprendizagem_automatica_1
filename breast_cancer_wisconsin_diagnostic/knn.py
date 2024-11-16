@@ -22,7 +22,7 @@ test_dataset = pandas.read_csv(
 x_test = test_dataset.drop(columns=['Diagnosis'])
 t_test = test_dataset['Diagnosis']
 
-n_neighbors = 1
+n_neighbors = 5
 p = 1
 knn = KNeighborsClassifier(n_neighbors, p=p)
 knn.fit(x_train, t_train)
