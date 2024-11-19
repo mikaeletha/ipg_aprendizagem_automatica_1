@@ -1,8 +1,9 @@
 import matplotlib.pyplot as plt
 import pandas
 from numpy import sort
+from sklearn.calibration import LinearSVC
 from sklearn.metrics import ConfusionMatrixDisplay, accuracy_score, classification_report
-from sklearn.neighbors import KNeighborsClassifier
+from sklearn.svm import SVC
 
 
 def display_confusion_matrix(targets, predicted, classes, title):
@@ -15,22 +16,24 @@ def display_confusion_matrix(targets, predicted, classes, title):
 dataset = pandas.read_csv(
     "breast_cancer_wisconsin_diagnostic/pre_processed/wdbc_train.csv")
 x_train = dataset.drop(columns=['Diagnosis'])
-t_train = dataset['Diagnosis']
+t_train = dataset['Diagnosis']  # actual outputs (targets)
 
 test_dataset = pandas.read_csv(
     "breast_cancer_wisconsin_diagnostic/pre_processed/wdbc_test.csv")
 x_test = test_dataset.drop(columns=['Diagnosis'])
-t_test = test_dataset['Diagnosis']
+t_test = test_dataset['Diagnosis']  # actual outputs (targets)
 
-n_neighbors = 4
-p = 1
-knn = KNeighborsClassifier(n_neighbors, p=p)
-knn.fit(x_train, t_train)
+c = 1
+kernel = "poly"
+svm = SVC(C=c, kernel=kernel)  # one vs one
+# svm = LinearSVC(C = c) # one vs all
+svm.fit(x_train, t_train)
 
-y_train = knn.predict(x_train)
-y_test = knn.predict(x_test)
+# model predicted outputs
+y_train = svm.predict(x_train)
+y_test = svm.predict(x_test)
 
-quality = dataset['Diagnosis'].unique()
+classes = dataset['Diagnosis'].unique()
 
 print("Training data:")
 print(f"accuracy: {accuracy_score(t_train, y_train) * 100:.2f}%")
@@ -46,6 +49,6 @@ print("Test report")
 test_report = classification_report(t_test, y_test, digits=4)
 print(test_report)
 
-display_confusion_matrix(t_train, y_train, quality,
+display_confusion_matrix(t_train, y_train, classes,
                          "Training data confusion matrix")
-display_confusion_matrix(t_test, y_test, quality, "Test data confusion matrix")
+display_confusion_matrix(t_test, y_test, classes, "Test data confusion matrix")

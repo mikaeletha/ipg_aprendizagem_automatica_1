@@ -14,6 +14,7 @@ def optimize_knn(file_path):
     gs = GridSearchCV(
         KNeighborsClassifier(),
         param,
+        # scoring='precision_macro',
         scoring='recall_macro',
         verbose=True
     )

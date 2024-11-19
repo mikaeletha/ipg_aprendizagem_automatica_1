@@ -18,6 +18,7 @@ print('REMOVE LINHHAS VAZIAS, OK')
 
 # REMOVE COLUNAS IRRELEVANTES
 dataset = dataset.drop(columns=['ID'])
+dataset = dataset.loc[:, ~dataset.columns.str.startswith('SE_')]
 print('REMOVE COLUNAS IRRELEVANTES, OK')
 
 # SALVA DADOS TRATADOS
