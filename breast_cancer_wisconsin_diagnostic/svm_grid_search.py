@@ -6,7 +6,7 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.svm import SVC
 
 # c_values = np.logspace(-3, 3, 7)
-c_values = range(1, 10, 1)
+c_values = np.arange(0, 1.1, 0.1)
 
 param = [
     {'C': c_values,
@@ -21,7 +21,7 @@ gs = GridSearchCV(
     param,
     # scoring='f1_macro',
     # scoring='precision_macro',
-    scoring='recall_macro',
+    scoring='recall',
     verbose=True
 )
 
