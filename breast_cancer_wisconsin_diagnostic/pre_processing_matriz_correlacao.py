@@ -1,12 +1,17 @@
 import pandas
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler
+import seaborn as sns
+import matplotlib.pyplot as plt
 
 column_names = ['ID', 'Diagnosis', 'Mean_Radius', 'Mean_Texture', 'Mean_Perimeter', 'Mean_Area', 'Mean_Smoothness', 'Mean_Compactness', 'Mean_Concavity', 'Mean_Concave_Points', 'Mean_Symmetry', 'Mean_Fractal_Dimension',
                 'SE_Radius', 'SE_Texture', 'SE_Perimeter', 'SE_Area', 'SE_Smoothness', 'SE_Compactness', 'SE_Concavity', 'SE_Concave_Points', 'SE_Symmetry', 'SE_Fractal_Dimension',
                 'Worst_Radius', 'Worst_Texture', 'Worst_Perimeter', 'Worst_Area', 'Worst_Smoothness', 'Worst_Compactness', 'Worst_Concavity', 'Worst_Concave_Points', 'Worst_Symmetry', 'Worst_Fractal_Dimension']
 dataset = pandas.read_csv(
     "breast_cancer_wisconsin_diagnostic/data/wdbc.data", header=None, names=column_names)
+
+# MAPEIA A VARIAVEL DIAGNOSIS PARA VALORES BINARIOS
+dataset['Diagnosis'] = dataset['Diagnosis'].map({'M': 1, 'B': 0})
 
 # REMOVE LINHA DUPLICADAS
 dataset = dataset.drop_duplicates()
@@ -60,3 +65,15 @@ test.to_csv(
     'breast_cancer_wisconsin_diagnostic/pre_processed/wdbc_test.csv', index=False)
 
 print("Processamento concluído! Os dados de treino e teste foram salvos com sucesso.")
+
+# CALCULAR MATRIZ DE CORRELAÇÃO
+correlation_matrix = dataset.corr()
+print(correlation_matrix)
+correlation_matrix.to_csv(
+    'breast_cancer_wisconsin_diagnostic/pre_processed/correlation_matrix.csv')
+
+plt.figure(figsize=(12, 10))
+sns.heatmap(correlation_matrix, annot=True,
+            cmap='coolwarm', fmt='.2f', linewidths=0.5)
+plt.title('Matriz de Correlação das Variáveis')
+plt.show()
