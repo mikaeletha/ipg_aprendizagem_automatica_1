@@ -15,7 +15,7 @@ def optimize_knn(file_path):
         KNeighborsClassifier(),
         param,
         # scoring='precision_macro',
-        scoring='recall_macro',
+        scoring='recall',
         verbose=True
     )
 

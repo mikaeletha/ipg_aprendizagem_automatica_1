@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import pandas
 from numpy import sort
-from sklearn.metrics import ConfusionMatrixDisplay, accuracy_score, classification_report
+from sklearn.metrics import ConfusionMatrixDisplay, accuracy_score, classification_report, recall_score
 from sklearn.neighbors import KNeighborsClassifier
 
 
@@ -22,7 +22,7 @@ test_dataset = pandas.read_csv(
 x_test = test_dataset.drop(columns=['Diagnosis'])
 t_test = test_dataset['Diagnosis']
 
-n_neighbors = 4
+n_neighbors = 1
 p = 1
 knn = KNeighborsClassifier(n_neighbors, p=p)
 knn.fit(x_train, t_train)
@@ -34,9 +34,11 @@ quality = dataset['Diagnosis'].unique()
 
 print("Training data:")
 print(f"accuracy: {accuracy_score(t_train, y_train) * 100:.2f}%")
+print(f"recall: {recall_score(t_train, y_train) * 100:.2f}%")
 
 print("Testing data:")
 print(f"accuracy: {accuracy_score(t_test, y_test) * 100:.2f}%")
+print(f"recall: {recall_score(t_test, y_test) * 100:.2f}%")
 
 print("Train report")
 train_report = classification_report(t_train, y_train, digits=4)
