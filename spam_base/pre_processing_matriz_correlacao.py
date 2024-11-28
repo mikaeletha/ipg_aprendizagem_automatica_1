@@ -76,15 +76,3 @@ test.to_csv(
     'spam_base/pre_processed/spambase_test.csv', index=False)
 
 print("Processamento concluído! Os dados de treino e teste foram salvos com sucesso.")
-
-# CALCULAR MATRIZ DE CORRELAÇÃO
-# correlation_matrix = dataset.corr()
-# print(correlation_matrix)
-# correlation_matrix.to_csv(
-#     'spam_base/pre_processed/correlation_matrix.csv')
-
-# plt.figure(figsize=(12, 10))
-# sns.heatmap(correlation_matrix, annot=True,
-#             cmap='coolwarm', fmt='.2f', linewidths=0.5)
-# plt.title('Matriz de Correlação das Variáveis')
-# plt.show()
