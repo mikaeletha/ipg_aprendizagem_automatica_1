@@ -7,15 +7,14 @@ def optimize_knn(file_path):
     param = [
         {
             'n_neighbors': range(1, 3),
-            'p': [1, 2, 3, 4, 5]
+            'p': [1, 2, 3]
         }
     ]
 
     gs = GridSearchCV(
         KNeighborsClassifier(),
         param,
-        scoring='f1_macro',
-        # scoring='recall',
+        scoring='precision',
         verbose=True
     )
 
@@ -25,8 +24,9 @@ def optimize_knn(file_path):
 
     gs.fit(x_train, t_train)
 
-    print(f"Best parameters for {file_path}: ", gs.best_params_)
-    print(f"Best score for {file_path}: ", gs.best_score_)
+    # Melhor parâmetro encontrado
+    print(f"Best parameters: ", gs.best_params_)
+    print(f"Best score: ", gs.best_score_)
 
 
 optimize_knn("spam_base/pre_processed/spambase_test.csv")

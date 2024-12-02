@@ -22,8 +22,8 @@ test_dataset = pandas.read_csv(
 x_test = test_dataset.drop(columns=['spam'])
 t_test = test_dataset['spam']
 
-n_neighbors = 1
-p = 2
+n_neighbors = 2
+p = 1
 knn = KNeighborsClassifier(n_neighbors, p=p)
 knn.fit(x_train, t_train)
 
