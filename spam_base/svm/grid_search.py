@@ -3,28 +3,28 @@ import numpy as np
 from sklearn.model_selection import GridSearchCV
 from sklearn.svm import SVC
 
-# c_values = np.logspace(-3, 3, 7)
-c_values = np.arange(0, 1.1, 0.1)
-
 param = [
-    {'C': c_values,
-     'kernel': ['linear', 'poly', 'sigmoid', 'rbf']
-     },
+    {
+        'C': [0.09, 0.1, 0.2],
+        'kernel': ['linear', 'poly', 'sigmoid', 'rbf']
+    },
 ]
 
 
 gs = GridSearchCV(
-    # LinearSVC(),
-    SVC(),
+    # SVC(),
+    # Ajuste para lidar com classes desbalanceadas
+    SVC(class_weight='balanced'),
     param,
-    scoring='precision',
+    # scoring='precision',
+    scoring='f1_macro',
     verbose=True
 )
 
 dataset = pandas.read_csv(
     "spam_base/pre_processed/spambase_train.csv")
 x_train = dataset.drop(columns=['spam'])
-t_train = dataset['spam']  # actual outputs (targets)
+t_train = dataset['spam']
 
 
 # Fit the model

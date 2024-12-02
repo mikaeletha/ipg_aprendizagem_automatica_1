@@ -1,9 +1,39 @@
 import matplotlib.pyplot as plt
 import pandas
 from numpy import sort
-from sklearn.calibration import LinearSVC
-from sklearn.metrics import ConfusionMatrixDisplay, accuracy_score, classification_report
+from sklearn.metrics import ConfusionMatrixDisplay, classification_report
 from sklearn.svm import SVC
+
+target = 'spam'
+
+# SEPERAR FEATURES E TARGET TREINO
+dataset = pandas.read_csv(
+    "spam_base/pre_processed/spambase_train.csv")
+x_train = dataset.drop(columns=[target])
+t_train = dataset[target]
+
+# SEPERAR FEATURES E TARGET TESTE
+test_dataset = pandas.read_csv(
+    "spam_base/pre_processed/spambase_test.csv")
+x_test = test_dataset.drop(columns=[target])
+t_test = test_dataset[target]
+
+# HIPERPARAMETROS
+c = 0.1
+kernel = "poly"
+
+# CRIAR MODELO SVM
+svm = SVC(C=c, kernel=kernel)
+
+# TREINAR MODELO USANDO OS DADOS DE TREINAMENTO
+svm.fit(x_train, t_train)
+
+# SAÍDA PREVISTAS PELO MODELO - PREVISÕES
+y_train = svm.predict(x_train)
+y_test = svm.predict(x_test)
+
+# OBTER CLASSES/TARGET DO CONJUNTO DE DADOS (SPAM/NÃO SPAM)
+classes = dataset[target].unique()
 
 
 def display_confusion_matrix(targets, predicted, classes, title):
@@ -13,33 +43,15 @@ def display_confusion_matrix(targets, predicted, classes, title):
     plt.show()
 
 
-dataset = pandas.read_csv(
-    "breast_cancer_wisconsin_diagnostic/pre_processed/wdbc_train.csv")
-x_train = dataset.drop(columns=['Diagnosis'])
-t_train = dataset['Diagnosis']  # actual outputs (targets)
+display_confusion_matrix(t_train, y_train, classes,
+                         "Training data confusion matrix")
+display_confusion_matrix(t_test, y_test, classes, "Test data confusion matrix")
 
-test_dataset = pandas.read_csv(
-    "breast_cancer_wisconsin_diagnostic/pre_processed/wdbc_test.csv")
-x_test = test_dataset.drop(columns=['Diagnosis'])
-t_test = test_dataset['Diagnosis']  # actual outputs (targets)
+# print("Training data:")
+# print(f"accuracy: {accuracy_score(t_train, y_train) * 100:.2f}%")
 
-c = 1
-kernel = "poly"
-svm = SVC(C=c, kernel=kernel)  # one vs one
-# svm = LinearSVC(C = c) # one vs all
-svm.fit(x_train, t_train)
-
-# model predicted outputs
-y_train = svm.predict(x_train)
-y_test = svm.predict(x_test)
-
-classes = dataset['Diagnosis'].unique()
-
-print("Training data:")
-print(f"accuracy: {accuracy_score(t_train, y_train) * 100:.2f}%")
-
-print("Testing data:")
-print(f"accuracy: {accuracy_score(t_test, y_test) * 100:.2f}%")
+# print("Testing data:")
+# print(f"accuracy: {accuracy_score(t_test, y_test) * 100:.2f}%")
 
 print("Train report")
 train_report = classification_report(t_train, y_train, digits=4)
@@ -48,7 +60,3 @@ print(train_report)
 print("Test report")
 test_report = classification_report(t_test, y_test, digits=4)
 print(test_report)
-
-display_confusion_matrix(t_train, y_train, classes,
-                         "Training data confusion matrix")
-display_confusion_matrix(t_test, y_test, classes, "Test data confusion matrix")
